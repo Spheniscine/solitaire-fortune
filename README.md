@@ -1,28 +1,11 @@
-# Development
+# Fortune Cookie Solitaire
 
-Your new bare-bones project includes minimal organization with a single `main.rs` file and a few assets.
+A web-and-mobile-friendly implementation of Fortune Cookie Solitaire.
 
-```
-project/
-├─ assets/ # Any assets that are used by the app should be placed here
-├─ src/
-│  ├─ main.rs # main.rs is the entry point to your application and currently contains all components for the app
-├─ Cargo.toml # The Cargo.toml file defines the dependencies and feature flags for your project
-```
+Features a 74-card deck (a standard 52-card deck + 22 trump cards, similar to a Tarot deck). Based on Fortune’s Foundation by Zachtronics, but with 3 free cells instead of 1, to improve winnability and playability for random deals. Like the original, each free cell comes with a drawback:
 
+- One blocks common cards from the foundations (the original free cell)
+- One blocks trump cards from the foundations
+- One may only be used once a game
 
-
-### Serving Your App
-
-Run the following command in the root of your project to start developing with the default platform:
-
-```bash
-dx serve
-```
-
-To run for a different platform, use the `--platform platform` flag. E.g.
-```bash
-dx serve --platform desktop
-```
-
-
+Note that drag-and-drop is not supported or needed. Moves are done by selecting the card or stack, then clicking its destination.
