@@ -30,7 +30,7 @@ impl Suit {
         }
     }
     pub fn iter_normal() -> impl Iterator<Item=Self> {
-        Self::iter().take(NUM_SUITS_NORMAL)
+        Self::iter().take(NUM_SUITS_COMMON)
     }
 }
 
@@ -72,10 +72,10 @@ pub const TRUMP_RANK_MIN: u8 = 0;
 pub const TRUMP_RANK_MAX: u8 = 21;
 pub const RANKS: RangeInclusive<u8> = RANK_MIN ..= RANK_MAX;
 pub const TRUMP_RANKS: RangeInclusive<u8> = TRUMP_RANK_MIN ..= TRUMP_RANK_MAX;
-pub const NUM_SUITS_NORMAL: usize = Suit::COUNT - 1;
+pub const NUM_SUITS_COMMON: usize = Suit::COUNT - 1;
 pub const NUM_RANKS: usize = (RANK_MAX - RANK_MIN) as usize + 1;
 pub const NUM_TRUMPS: usize = (TRUMP_RANK_MAX - TRUMP_RANK_MIN) as usize + 1;
-pub const DECK_SIZE: usize = NUM_RANKS * NUM_SUITS_NORMAL + NUM_TRUMPS;
+pub const DECK_SIZE: usize = NUM_RANKS * NUM_SUITS_COMMON + NUM_TRUMPS;
 
 impl Card {
     pub fn code(self) -> String {
