@@ -11,7 +11,7 @@ pub trait SkinTrait<C>: PartialEq + Clone {
 }
 
 pub const BASE_CARD_WIDTH: f32 = 8.;
-pub const BASE_CARD_HEIGHT: f32 = 12.;
+pub const BASE_CARD_HEIGHT: f32 = 11.5;
 pub const CARD_HEIGHT_RATIO: f32 = BASE_CARD_HEIGHT / BASE_CARD_WIDTH;
 pub const CARD_BORDER_RADIUS_RATIO: f32 = 1. / BASE_CARD_WIDTH;
 
