@@ -60,8 +60,8 @@ fn App() -> Element {
 
 #[component]
 pub fn Hero() -> Element {
-    let card = Card { rank: 13, suit: game::Suit::Spades };
-    let skin = Skin { suits: game::SuitSkin::Animals, colors: game::ColorSkin::FourColor };
+    let card = Card { rank: 13, suit: game::Suit::Trump };
+    let skin = Skin { ranks: game::RankSkin::Traditional, suits: game::SuitSkin::Animals, colors: game::ColorSkin::FourColor };
 
     rsx! {
         div {

@@ -3,7 +3,32 @@ use std::ops::Not;
 use serde::{Deserialize, Serialize};
 use strum_macros::{EnumIter, FromRepr};
 
-use crate::game::Suit;
+use crate::game::{Card, Suit};
+
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, Debug, EnumIter, strum_macros::Display, Default, FromRepr)]
+#[repr(u8)]
+pub enum RankSkin {
+    #[default]
+    Numbers,
+    Traditional,
+}
+
+impl RankSkin {
+    pub fn rank_text(self, card: Card) -> String {
+        let rank = card.rank;
+        if self == RankSkin::Traditional && card.suit != Suit::Trump {
+            match rank {
+                1 => String::from("A"),
+                11 => String::from("J"),
+                12 => String::from("Q"),
+                13 => String::from("K"),
+                _ => rank.to_string(),
+            }
+        } else {
+            rank.to_string()
+        }
+    }
+}
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, Debug, EnumIter, strum_macros::Display, Default, FromRepr)]
 #[repr(u8)]
@@ -116,6 +141,7 @@ impl ColorSkin {
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, Debug, Default)]
 pub struct Skin {
+    pub ranks: RankSkin,
     pub suits: SuitSkin,
     pub colors: ColorSkin,
 }
