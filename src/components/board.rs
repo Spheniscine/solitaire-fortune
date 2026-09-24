@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use glam::Vec2;
 
-use crate::{components::{BASE_CARD_HEIGHT, BASE_CARD_WIDTH, CARD_BORDER_RADIUS_RATIO, CARD_FRAME_DEFAULT_COLOR, CardComponent, CardFrame, Movement, SkinTrait, rem}, game::{AnimationAct, AnimationKey, Board, BoardPos, Card, DepotRole, FREECELL_BLOCKS_COMMON, FREECELL_BLOCKS_TRUMP, FREECELL_SINGLE_USE, NUM_DEPOTS, RANK_MIN, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN}};
+use crate::{components::{BASE_CARD_HEIGHT, BASE_CARD_WIDTH, CARD_BORDER_RADIUS_RATIO, CARD_FRAME_DEFAULT_COLOR, CARD_HEIGHT_RATIO, CardComponent, CardFrame, Movement, SkinTrait, rem}, game::{AnimationAct, AnimationKey, Board, BoardPos, Card, DepotRole, FREECELL_BLOCKS_COMMON, FREECELL_BLOCKS_TRUMP, FREECELL_SINGLE_USE, NUM_DEPOTS, RANK_MIN, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN}};
 
 #[component]
 pub fn BoardComponent(
@@ -19,10 +19,10 @@ pub fn BoardComponent(
     is_won: bool,
 ) -> Element {
     let card_width = BASE_CARD_WIDTH;
-    let card_height = BASE_CARD_HEIGHT;
+    let card_height = card_width * CARD_HEIGHT_RATIO;
     let spacer_x = 0.8f32;
     let spacer_y = 1f32;
-    let start_y = 2f32;
+    let start_y = 3f32;
 
     let pos_x = {
         let w = DepotRole::Tableau.number_of() as f32;

@@ -5,7 +5,7 @@ use rand::{Rng, seq::SliceRandom};
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 
-use crate::game::{Board, BoardPos, Card, DECK_SIZE, DepotRole, FREECELL_BLOCKS_COMMON, FREECELL_BLOCKS_TRUMP, FREECELL_SINGLE_USE, NUM_RANKS, NUM_TRUMPS, RANKS, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN, TRUMP_RANKS};
+use crate::{components::LocalStorage, game::{Board, BoardPos, Card, DECK_SIZE, DepotRole, FREECELL_BLOCKS_COMMON, FREECELL_BLOCKS_TRUMP, FREECELL_SINGLE_USE, NUM_RANKS, NUM_TRUMPS, RANKS, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN, TRUMP_RANKS}};
 
 pub const ANIMATION_DURATION: Duration = Duration::from_millis(200);
 pub type AnimationKey = u16;
@@ -81,7 +81,7 @@ impl GameState {
         self.undo_stack.clear();
         self.already_won = false;
 
-        // if !self.is_busy() { LocalStorage.save_game_state(&self); }
+        if !self.is_busy() { LocalStorage.save_game_state(&self); }
     }
 
     pub fn is_busy(&self) -> bool {
@@ -255,6 +255,34 @@ impl GameState {
             // self.check_auto_moves();
         }
 
-        // if !self.is_busy() { LocalStorage.save_game_state(&self); }
+        if !self.is_busy() { LocalStorage.save_game_state(&self); }
+    }
+
+    pub fn restart(&mut self) {
+        if self.history.is_empty() || !self.undo_possible() { return; }
+        self.board = Board::from_deal(&self.deal);
+        self.history.clear();
+        self.undo_stack.clear();
+
+        if !self.is_busy() { LocalStorage.save_game_state(&self); }
+    }
+
+    pub fn undo(&mut self) {
+        if self.is_busy() || !self.undo_possible() { return; }
+        let Some(target_len) = self.undo_stack.pop() else {return};
+        while self.history.len() > target_len {
+            let rec = self.history.pop().unwrap();
+            match rec {
+                ActionRecord::Move { pos1, pos2 } => {
+                    self.board.do_move(pos2, pos1)
+                },
+                ActionRecord::FreeCellSingleUsed => {
+                    self.board.freecell_single_used = false;
+                },
+            }
+            self.board.advance_actions(); // no animation, as repeated card moves on same card causes problems
+        }
+
+        LocalStorage.save_game_state(&self);
     }
 }
