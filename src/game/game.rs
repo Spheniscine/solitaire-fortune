@@ -3,7 +3,7 @@ use std::time::Duration;
 use rand::{Rng, seq::SliceRandom};
 use serde::{Deserialize, Serialize};
 
-use crate::{components::LocalStorage, game::{Board, BoardPos, Card, DECK_SIZE, DepotRole, FREECELL_BLOCKS_COMMON, FREECELL_BLOCKS_TRUMP, FREECELL_SINGLE_USE, NUM_RANKS, NUM_TRUMPS, RANKS, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN, TRUMP_RANKS}};
+use crate::{components::LocalStorage, game::{Board, BoardPos, Card, DECK_SIZE, DepotRole, FREECELL_BLOCKS_COMMON, FREECELL_BLOCKS_TRUMP, FREECELL_SINGLE_USE, NUM_RANKS, NUM_TRUMPS, RANKS, SettingsState, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN, TRUMP_RANKS}};
 
 pub const ANIMATION_DURATION: Duration = Duration::from_millis(200);
 pub type AnimationKey = u16;
@@ -281,6 +281,19 @@ impl GameState {
             self.board.advance_actions(); // no animation, as repeated card moves on same card causes problems
         }
 
+        LocalStorage.save_game_state(&self);
+    }
+
+    pub fn new_settings_state(&self) -> SettingsState {
+        SettingsState {
+            allow_undo: self.allow_undo,
+            skin: self.skin,
+        }
+    }
+
+    pub fn apply_settings(&mut self, settings: &SettingsState){
+        self.allow_undo = settings.allow_undo;
+        self.skin = settings.skin;
         LocalStorage.save_game_state(&self);
     }
 }
