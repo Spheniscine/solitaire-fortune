@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use glam::Vec2;
 
-use crate::{components::{BASE_CARD_HEIGHT, BASE_CARD_WIDTH, CARD_BORDER_RADIUS_RATIO, CARD_FRAME_DEFAULT_COLOR, CardComponent, CardFrame, SkinTrait, rem}, game::{AnimationKey, Board, BoardPos, Card, DepotRole, FREECELL_BLOCKS_COMMON, FREECELL_BLOCKS_TRUMP, FREECELL_SINGLE_USE, NUM_DEPOTS, RANK_MIN, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN}};
+use crate::{components::{BASE_CARD_HEIGHT, BASE_CARD_WIDTH, CARD_BORDER_RADIUS_RATIO, CARD_FRAME_DEFAULT_COLOR, CardComponent, CardFrame, Movement, SkinTrait, rem}, game::{AnimationAct, AnimationKey, Board, BoardPos, Card, DepotRole, FREECELL_BLOCKS_COMMON, FREECELL_BLOCKS_TRUMP, FREECELL_SINGLE_USE, NUM_DEPOTS, RANK_MIN, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN}};
 
 #[component]
 pub fn BoardComponent(
@@ -128,6 +128,44 @@ pub fn BoardComponent(
         }
     };
 
+    let moving_card = |p1: Vec2, p2: Vec2, card: Card| rsx! {
+        Movement {
+            src_translate_vec: p1 - p2,
+            CardComponent {
+                position: p2,
+                width: card_width,
+                card: card,
+                skin,
+            }
+        }
+    };
+
+    let anims = board.animation_acts.iter().enumerate().map(|(i, act)| {
+        match act {
+            AnimationAct::Move { cards, pos1, pos2 } => {
+                let mut pos1 = *pos1;
+                let mut pos2 = *pos2;
+
+                pos1.card_index += cards.len();
+                let nodes = cards.iter().map(move |card| {
+                    pos1.card_index -= 1;
+                    let p1 = get_pos(pos1.depot_index, pos1.card_index);
+                    let p2 = get_pos(pos2.depot_index, pos2.card_index);
+                    let res = moving_card(p1, p2, *card);
+                    pos2.card_index += 1;
+                    res
+                });
+
+                rsx! {
+                    Fragment {
+                        key: "{animation_key},{i}", // needed to force remounts, so animations don't get "stale" and refuse to replay
+                        {nodes}
+                    }
+                }
+            },
+        }
+    });
+
     rsx! {
         div {
             position: "absolute",
@@ -179,7 +217,7 @@ pub fn BoardComponent(
                 }
             }
 
-            // {anims}
+            {anims}
 
             if is_won {
                 div {
