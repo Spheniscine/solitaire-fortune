@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use glam::Vec2;
 
-use crate::{components::{BASE_CARD_HEIGHT, BASE_CARD_WIDTH, CARD_BORDER_RADIUS_RATIO, CardComponent, CardFrame, SkinTrait, rem}, game::{AnimationKey, Board, BoardPos, Card, DepotRole, FREECELL_SINGLE_USE, NUM_DEPOTS, RANK_MIN, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN}};
+use crate::{components::{BASE_CARD_HEIGHT, BASE_CARD_WIDTH, CARD_BORDER_RADIUS_RATIO, CARD_FRAME_DEFAULT_COLOR, CardComponent, CardFrame, SkinTrait, rem}, game::{AnimationKey, Board, BoardPos, Card, DepotRole, FREECELL_BLOCKS_COMMON, FREECELL_BLOCKS_TRUMP, FREECELL_SINGLE_USE, NUM_DEPOTS, RANK_MIN, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN}};
 
 #[component]
 pub fn BoardComponent(
@@ -83,11 +83,58 @@ pub fn BoardComponent(
         card_height + column_card_offset.y * d as f32
     } else {0.};
 
+    let filled_color = |depot: usize| {
+        if board.depots[depot].is_empty() {CARD_FRAME_DEFAULT_COLOR} else {"#ff0"}
+    };
+    let freecell_label_width = 4f32;
+
+    let freecell_labels = {
+        let pos1 = get_pos(FREECELL_BLOCKS_TRUMP, 0) - Vec2::new(spacer_x + freecell_label_width, 0.);
+        let pos2 = get_pos(FREECELL_BLOCKS_COMMON, 0) + Vec2::new(card_width + spacer_x, 0.);
+
+        let label = |pos: Vec2, arrow: &str, depot: usize| {
+            rsx! {
+                div {
+                    style: "place-items: center;",
+                    position: "absolute",
+                    height: rem(card_height),
+                    width: rem(freecell_label_width),
+                    line_height: 1,
+                    top: rem(pos.y),
+                    left: rem(pos.x),
+                    color: filled_color(depot),
+                    font_size: rem(3.4),
+                    display: "grid",
+                    
+
+                    span {
+                        text_align: "center",
+                        span {
+                            font_family: "'Noto Emoji'",
+                            "🔒"
+                        } br {}
+                        span {
+                            font_family: "'Noto Sans Symbols 2'",
+                            {arrow}
+                        }
+                    }
+                }
+            }
+        };
+
+        rsx! {
+            {label(pos1, "⬅", FREECELL_BLOCKS_TRUMP)}
+            {label(pos2, "⮕", FREECELL_BLOCKS_COMMON)}
+        }
+    };
+
     rsx! {
         div {
             position: "absolute",
             top: rem(position.y),
             left: rem(position.x),
+
+            {freecell_labels}
 
             for depot in 0..NUM_DEPOTS {
                 if let Some(hint) = get_hint(depot) {
