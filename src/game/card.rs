@@ -29,7 +29,7 @@ impl Suit {
             _ => None,
         }
     }
-    pub fn iter_normal() -> impl Iterator<Item=Self> {
+    pub fn iter_common() -> impl Iterator<Item=Self> {
         Self::iter().take(NUM_SUITS_COMMON)
     }
 }

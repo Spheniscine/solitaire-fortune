@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use glam::Vec2;
 
-use crate::{components::CardComponent, game::{Card, Skin}};
+use crate::{components::{CardComponent, Hero}, game::{Card, Skin}};
 
 mod game;
 mod components;
@@ -55,24 +55,5 @@ fn App() -> Element {
         document::Link { rel: "stylesheet", href: MAIN_CSS }
         Hero {}
 
-    }
-}
-
-#[component]
-pub fn Hero() -> Element {
-    let card = Card { rank: 13, suit: game::Suit::Trump };
-    let skin = Skin { ranks: game::RankSkin::Traditional, suits: game::SuitSkin::Animals, colors: game::ColorSkin::FourColor };
-
-    rsx! {
-        div {
-            id: "hero",
-            
-            CardComponent {
-                position: Vec2::new(10., 10.),
-                width: 8.,
-                card,
-                skin,
-            }
-        }
     }
 }

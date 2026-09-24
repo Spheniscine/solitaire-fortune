@@ -10,12 +10,12 @@ use crate::game::{Card, DECK_SIZE, NUM_SUITS_COMMON, Suit};
 #[derive(Copy, Clone, Serialize, Deserialize, Debug, PartialEq, Eq, EnumIter, VariantArray)]
 #[repr(u8)]
 pub enum DepotRole {
-    Tableau,
     TrumpLow,
     TrumpHigh,
     TrumpLast, // not directly displayed; utility to place the last trump on top of TrumpLow and TrumpHigh stacks
     CommonHome,
     FreeCell,
+    Tableau,
 }
 
 pub const NUM_DEPOTS: usize = {
@@ -31,12 +31,12 @@ pub const NUM_DEPOTS: usize = {
 impl DepotRole {
     pub const fn number_of(&self) -> usize {
         match self {
-            DepotRole::Tableau => 11,
             DepotRole::TrumpLow => 1,
             DepotRole::TrumpHigh => 1,
             DepotRole::TrumpLast => 1,
             DepotRole::CommonHome => NUM_SUITS_COMMON,
             DepotRole::FreeCell => 3,
+            DepotRole::Tableau => 11,
         }
     }
 
