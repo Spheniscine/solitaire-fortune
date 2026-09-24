@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use glam::Vec2;
 
-use crate::{components::{BASE_CARD_HEIGHT, BASE_CARD_WIDTH, CARD_BORDER_RADIUS_RATIO, CARD_FRAME_DEFAULT_COLOR, CARD_HEIGHT_RATIO, CardComponent, CardFrame, Movement, SkinTrait, rem}, game::{AnimationAct, AnimationKey, Board, BoardPos, Card, DepotRole, FREECELL_BLOCKS_COMMON, FREECELL_BLOCKS_TRUMP, FREECELL_SINGLE_USE, NUM_DEPOTS, RANK_MIN, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN}};
+use crate::{components::{BASE_CARD_WIDTH, CARD_BORDER_RADIUS_RATIO, CARD_FRAME_DEFAULT_COLOR, CARD_HEIGHT_RATIO, CardComponent, CardFrame, Movement, SkinTrait, rem}, game::{AnimationAct, AnimationKey, Board, BoardPos, Card, DepotRole, FREECELL_BLOCKS_COMMON, FREECELL_BLOCKS_TRUMP, FREECELL_SINGLE_USE, NUM_DEPOTS, RANK_MIN, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN}};
 
 #[component]
 pub fn BoardComponent(

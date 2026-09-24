@@ -1,9 +1,7 @@
-use core::num;
 use std::time::Duration;
 
 use rand::{Rng, seq::SliceRandom};
 use serde::{Deserialize, Serialize};
-use strum::IntoEnumIterator;
 
 use crate::{components::LocalStorage, game::{Board, BoardPos, Card, DECK_SIZE, DepotRole, FREECELL_BLOCKS_COMMON, FREECELL_BLOCKS_TRUMP, FREECELL_SINGLE_USE, NUM_RANKS, NUM_TRUMPS, RANKS, Skin, Suit, TRUMP_RANK_MAX, TRUMP_RANK_MIN, TRUMP_RANKS}};
 
