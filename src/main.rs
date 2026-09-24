@@ -11,8 +11,10 @@ const FAVICON: Asset = asset!("/assets/favicon.ico");
 // altered version of KaTeX_Main to include filled "red" suits
 const KATEX_SUITS: Asset = asset!("/assets/KaTeX_Suits.woff2");
 
+// from https://www.confettijs.org/
+const CONFETTI_JS: Asset = asset!("/assets/confetti.min.js");
+
 const MAIN_CSS: Asset = asset!("/assets/main.css");
-const HEADER_SVG: Asset = asset!("/assets/header.svg");
 
 fn main() {
     dioxus::launch(App);
@@ -53,6 +55,8 @@ fn App() -> Element {
         }
 
         document::Link { rel: "stylesheet", href: MAIN_CSS }
+
+        document::Script { src: CONFETTI_JS }
         Hero {}
 
     }
