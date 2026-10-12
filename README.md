@@ -10,6 +10,6 @@ Features a 74-card deck (a standard 52-card deck + 22 trump cards, similar to a 
 
 Note that drag-and-drop is not supported or needed. Moves are done by selecting the card or stack, then clicking its destination.
 
-Play here: (ad-supported) [https://www.onlinemathlearning.com/solitaire-lintsi-game.html]
+Play here: (ad-supported) [https://www.onlinemathlearning.com/fortune-cookie-solitaire-game.html]
 
-Or here: [https://spheniscine.github.io/solitaire-lintsi/]
+Or here: [https://spheniscine.github.io/solitaire-fortune/]
